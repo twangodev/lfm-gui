@@ -9,7 +9,10 @@ var displayOptionsSize = "70x"
 func presenceSettingsFrame() iup.Ihandle {
 	return iup.Frame(
 		iup.Hbox(
-			albumPresenceFrame(),
+			iup.Vbox(
+				albumPresenceFrame(),
+				buttonsFrame(),
+			),
 			contentPresenceFrame(),
 		),
 	).SetAttributes(`TITLE="Display Options", SIZE=` + globalColumnSize)

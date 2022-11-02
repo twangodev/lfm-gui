@@ -29,7 +29,6 @@ var config = configuration{
 			smallImageHoverEnabled: true,
 			smallImageHoverText:    "lfm-gui - " + version,
 			lovedEnabled:           true,
-			lovedKey:               "heart",
 		},
 		albumDefaultPreviewPath: albumDefaultPreviewPath,
 	},
@@ -58,20 +57,24 @@ func main() {
 	menu().SetHandle("menu")
 
 	hboxR1 := iup.Hbox(
-		credentialsFrame(),
 		settingsFrame(),
-		aboutFrame(),
+		controlFrame(),
+	)
+
+	hboxR2 := iup.Hbox(
+		previewFrame(),
 	)
 
 	vbox := iup.Vbox(
 		hboxR1,
-		previewFrame(),
+		hboxR2,
 		presenceSettingsFrame(),
 	).SetAttributes("MARGIN=4x5, GAP=5")
 	dlg := iup.Dialog(vbox)
 
-	dlg.SetAttributes(`TITLE="` + config.app.title + `", MENU=menu, RESIZE=NO,`)
+	dlg.SetAttributes(`TITLE="` + config.app.title + ` - ` + version + `", MENU=menu, RESIZE=NO,`)
 
 	iup.Show(dlg)
 	iup.MainLoop()
+
 }

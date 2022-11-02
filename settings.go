@@ -8,7 +8,7 @@ func settingsFrame() iup.Ihandle {
 			iup.Toggle("Close to tray"),
 			iup.Toggle("Run on Startup"),
 			iup.Toggle("Use Custom Discord\nApplication"),
-			customApplicationFrame(),
+			iup.Fill(),
 		),
 	).SetAttributes(`TITLE=Settings, SIZE=` + globalColumnSize)
 }

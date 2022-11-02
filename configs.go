@@ -25,7 +25,6 @@ type smallImageConfiguration struct {
 	smallImageHoverEnabled bool
 	smallImageHoverText    string
 	lovedEnabled           bool
-	lovedKey               string
 }
 
 type rowsConfiguration struct {
