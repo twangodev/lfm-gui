@@ -1,15 +1,25 @@
 package main
 
-import log "github.com/sirupsen/logrus"
+import (
+	"github.com/gen2brain/iup-go/iup"
+	log "github.com/sirupsen/logrus"
+)
 
-func changeState() error {
+func changeState() {
+	if config.state {
+		sendKillSignal()
+	} else {
+		sendStartSignal()
+	}
 
 	config.state = !config.state
-	log.Trace("State changed to: ", config.state)
-	return nil
+	log.Trace("Updating control frame button states")
+	iup.GetHandle("controlButton").SetAttribute("TITLE", enabledDisabled(config.state))
+	iup.GetHandle("forceUpdateButton").SetAttribute("ACTIVE", ooState(config.state))
+	iup.GetHandle("forceReconnectButton").SetAttribute("ACTIVE", ooState(config.state))
 }
 
-func kill() error {
-	config.state = false
-	return nil
+func reconnect() {
+	sendKillSignal()
+	sendStartSignal()
 }

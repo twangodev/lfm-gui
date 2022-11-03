@@ -2,28 +2,29 @@ package main
 
 import (
 	"github.com/gen2brain/iup-go/iup"
-	log "github.com/sirupsen/logrus"
 )
 
 const controlButtonSize = "100x"
 
 func enabledDisabled(boolean bool) string {
 	if boolean {
-		return "Enabled"
+		return "Disable"
 	}
-	return "Disabled"
+	return "Enable"
 }
 
 func enableDisableCallback(ih iup.Ihandle) int {
-	err := changeState()
-	if err != nil {
-		log.Warn("Error changing state: ", err)
-		err = kill()
-		if err != nil {
-			log.Error("Error killing:  ", err)
-		}
-	}
-	ih.SetAttribute("TITLE", enabledDisabled(config.state))
+	changeState()
+	return iup.DEFAULT
+}
+
+func forceUpdateCallback(ih iup.Ihandle) int {
+	updatePresence()
+	return iup.DEFAULT
+}
+
+func forceReconnectCallback(ih iup.Ihandle) int {
+	reconnect()
 	return iup.DEFAULT
 }
 
@@ -31,9 +32,9 @@ func controlFrame() iup.Ihandle {
 	return iup.Frame(
 		iup.Hbox(
 			iup.Vbox(
-				iup.Button(enabledDisabled(config.state)).SetAttribute("SIZE", controlButtonSize).SetCallback("ACTION", iup.ActionFunc(enableDisableCallback)),
-				iup.Button("Force Update").SetAttribute("SIZE", controlButtonSize),
-				iup.Button("Force Reconnect").SetAttribute("SIZE", controlButtonSize),
+				iup.Button(enabledDisabled(config.state)).SetAttribute("SIZE", controlButtonSize).SetCallback("ACTION", iup.ActionFunc(enableDisableCallback)).SetHandle("controlButton"),
+				iup.Button("Force Update").SetAttribute("SIZE", controlButtonSize).SetCallback("ACTION", iup.ActionFunc(forceUpdateCallback)).SetHandle("forceUpdateButton"),
+				iup.Button("Force Reconnect").SetAttribute("SIZE", controlButtonSize).SetCallback("ACTION", iup.ActionFunc(forceReconnectCallback)).SetHandle("forceReconnectButton"),
 				iup.Fill(),
 			),
 			iup.Fill(),
