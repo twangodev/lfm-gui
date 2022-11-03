@@ -19,7 +19,11 @@ func menu() iup.Ihandle {
 			iup.Item("Update Username"),
 			iup.Separator(),
 			iup.Item("Custom Discord Application"),
-			iup.Item("Configure Custom Application"),
+			iup.Item("Configure Custom Application").SetAttribute("ACTIVE", ynState(config.app.discordID != defaultDiscordId)),
+		)),
+		iup.Submenu("Settings", iup.Menu(
+			iup.Item("Close to Tray"),
+			iup.Item("Run on Startup"),
 		)),
 		iup.Submenu("Help", iup.Menu(
 			iup.Item("About"),

@@ -5,15 +5,13 @@ import (
 	"path/filepath"
 )
 
-const version = "DEV"
-
 var albumDefaultPreviewPath, _ = filepath.Abs("./assets/lfm_logo.png")
 
 var config = configuration{
 	app: appConfiguration{
 		title:     "Last.FM Discord RPC",
 		version:   version,
-		discordID: "970003417277812736",
+		discordID: defaultDiscordId,
 	},
 	username: "",
 	preview: previewConfiguration{
@@ -58,7 +56,6 @@ func main() {
 
 	hboxR1 := iup.Hbox(
 		settingsFrame(),
-		controlFrame(),
 	)
 
 	hboxR2 := iup.Hbox(

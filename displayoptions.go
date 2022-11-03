@@ -13,7 +13,10 @@ func presenceSettingsFrame() iup.Ihandle {
 				albumPresenceFrame(),
 				buttonsFrame(),
 			),
-			contentPresenceFrame(),
+			iup.Vbox(
+				contentPresenceFrame(),
+				controlFrame(),
+			),
 		),
 	).SetAttributes(`TITLE="Display Options", SIZE=` + globalColumnSize)
 }
