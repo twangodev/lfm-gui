@@ -49,4 +49,5 @@ type configuration struct {
 	refreshTime int
 	rows        rowsConfiguration
 	buttons     buttonsConfiguration
+	state       bool
 }

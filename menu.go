@@ -7,21 +7,22 @@ func menu() iup.Ihandle {
 		iup.Submenu("File", iup.Menu(
 			iup.Item("Import"),
 			iup.Item("Export"),
+			iup.Item("Save\tCtrl+S"),
 			iup.Item("Auto Save"),
 			iup.Separator(),
-			iup.Item("Exit").SetCallback("ACTION", exit),
+			iup.Item("Exit\tCtrl+Q").SetCallback("ACTION", iup.ActionFunc(exit)),
 		)),
 		iup.Submenu("Edit", iup.Menu(
 			iup.Item("Fields"),
 			iup.Item("Blacklist"),
 		)),
-		iup.Submenu("Last.FM", iup.Menu(
+		iup.Submenu("Settings", iup.Menu(
 			iup.Item("Update Username"),
 			iup.Separator(),
 			iup.Item("Custom Discord Application"),
 			iup.Item("Configure Custom Application").SetAttribute("ACTIVE", ynState(config.app.discordID != defaultDiscordId)),
-		)),
-		iup.Submenu("Settings", iup.Menu(
+			iup.Separator(),
+			iup.Item("Enable upon state").SetAttribute("VALUE", ynState(config.state)),
 			iup.Item("Close to Tray"),
 			iup.Item("Run on Startup"),
 		)),

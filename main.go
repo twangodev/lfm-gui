@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gen2brain/iup-go/iup"
+	log "github.com/sirupsen/logrus"
 	"path/filepath"
 )
 
@@ -44,6 +45,7 @@ var config = configuration{
 		songButtonEnabled:    true,
 		songButton:           "View scrobble on Last.FM",
 	},
+	state: true,
 }
 
 const globalColumnSize = "100x"
@@ -52,19 +54,13 @@ func main() {
 	iup.Open()
 	defer iup.Close()
 
+	log.SetLevel(log.TraceLevel)
+	log.SetReportCaller(true)
+
 	menu().SetHandle("menu")
 
-	hboxR1 := iup.Hbox(
-		settingsFrame(),
-	)
-
-	hboxR2 := iup.Hbox(
-		previewFrame(),
-	)
-
 	vbox := iup.Vbox(
-		hboxR1,
-		hboxR2,
+		previewFrame(),
 		presenceSettingsFrame(),
 	).SetAttributes("MARGIN=4x5, GAP=5")
 	dlg := iup.Dialog(vbox)
