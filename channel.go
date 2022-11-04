@@ -6,17 +6,17 @@ var channel = make(chan frame)
 
 func sendStartSignal() {
 	log.Trace("Sending start signal")
-	channel <- frame{opcode: 0, data: true}
+	channel <- frame{opcode: STATE_UPDATE, data: true}
 }
 
 func sendKillSignal() {
 	log.Trace("Sending kill signal")
-	channel <- frame{opcode: 0, data: false}
+	channel <- frame{opcode: STATE_UPDATE, data: false}
 }
 
 func updatePresence() {
 	log.Trace("Sending presence update signal")
-	channel <- frame{opcode: 1, data: nil}
+	channel <- frame{opcode: PRESENCE_UPDATE, data: nil}
 }
 
 func handleMsg(msg frame) {

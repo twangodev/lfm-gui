@@ -22,8 +22,8 @@ func menu() iup.Ihandle {
 			iup.Item("Custom Discord Application"),
 			iup.Item("Configure Custom Application").SetAttribute("ACTIVE", ynState(config.app.discordID != defaultDiscordId)),
 			iup.Separator(),
-			iup.Item("Enable upon state").SetAttribute("VALUE", ynState(config.state)),
-			iup.Item("Close to Tray"),
+			iup.Item("Enable upon startup").SetAttribute("VALUE", ynState(config.state)),
+			iup.Item("Minimize to Tray"),
 			iup.Item("Run on Startup"),
 		)),
 		iup.Submenu("Help", iup.Menu(

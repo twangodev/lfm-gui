@@ -1,6 +1,6 @@
 package main
 
 type frame struct {
-	opcode int
+	opcode opcode
 	data   interface{}
 }
