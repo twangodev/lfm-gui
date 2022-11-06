@@ -25,8 +25,8 @@ func rpcPreviewFrame() iup.Ihandle {
 		iup.Label("").SetAttribute("IMAGE", "previewImage"),
 		iup.Vbox(
 			iup.Label("Playing last.fm").SetAttribute("FONT", previewBoldFont),
-			iup.Label(config.rows.rowOne),
-			iup.Label(config.rows.rowTwo),
+			iup.Label(config.rows.rowOneText),
+			iup.Label(config.rows.rowTwoText),
 			iup.Label("0:00 elapsed"),
 		),
 	)

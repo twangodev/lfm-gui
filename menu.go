@@ -25,12 +25,22 @@ func menu() iup.Ihandle {
 			iup.Item("Enable upon startup").SetAttribute("VALUE", ynState(config.state)),
 			iup.Item("Minimize to Tray"),
 			iup.Item("Run on Startup"),
+			iup.Separator(),
+			iup.Submenu("Logs", iup.Menu(
+				iup.Item("Open Log File"),
+				iup.Submenu("Log Level", iup.Menu(
+					iup.Item("Trace"),
+					iup.Item("Debug"),
+					iup.Item("Info"),
+				)),
+			)),
+			iup.Separator(),
+			iup.Item("Reset to Defaults"),
 		)),
 		iup.Submenu("Help", iup.Menu(
 			iup.Item("About"),
 			iup.Item("View Documentation"),
 			iup.Item("Github"),
-			iup.Item("Logs"),
 		)),
 	)
 }

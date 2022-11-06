@@ -15,14 +15,14 @@ func previewFrame() iup.Ihandle {
 						iup.BackgroundBox(
 							iup.Hbox(
 								iup.Fill(),
-								iup.Label(config.buttons.profileButton).SetAttribute("FGCOLOR", "255 255 255"),
+								iup.Label(config.buttons.profileButtonText).SetAttribute("FGCOLOR", "255 255 255"),
 								iup.Fill(),
 							),
 						).SetAttribute("BGCOLOR", "90 90 90"),
 						iup.BackgroundBox(
 							iup.Hbox(
 								iup.Fill(),
-								iup.Label(config.buttons.songButton).SetAttribute("FGCOLOR", "255 255 255"),
+								iup.Label(config.buttons.songButtonText).SetAttribute("FGCOLOR", "255 255 255"),
 								iup.Fill(),
 							),
 						).SetAttribute("BGCOLOR", "90 90 90"),
