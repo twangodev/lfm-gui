@@ -1,45 +1,47 @@
 package main
 
+import (
+	"lfm-gui/concurrency"
+)
+
 type appConfiguration struct {
 	title     string
-	version   string
 	discordID string
 }
 
 type previewConfiguration struct {
-	enabled                 bool
-	albumConfig             albumConfiguration
-	smallImageConfig        smallImageConfiguration
-	albumDefaultPreviewPath string
+	enabled          bool
+	albumConfig      albumConfiguration
+	smallImageConfig smallImageConfiguration
 }
 
 type albumConfiguration struct {
-	cover                    string
-	albumDefaultHoverEnabled bool
-	albumDefaultHoverText    string
+	cover                 string
+	hover                 bool
+	albumDefaultHoverText string
 }
 
 type smallImageConfiguration struct {
-	enabled                bool
-	smallImageDefaultKey   string
-	smallImageHoverEnabled bool
-	smallImageHoverText    string
-	lovedEnabled           bool
+	enabled              bool
+	smallImageDefaultKey string
+	smallImageHover      bool
+	smallImageHoverText  string
+	lovedEnabled         bool
 }
 
 type rowsConfiguration struct {
-	rowOneEnabled      bool
-	rowOne             string
-	rowTwoEnabled      bool
-	rowTwo             string
-	timeElapsedEnabled bool
+	rowOne      bool
+	rowOneText  string
+	rowTwo      bool
+	rowTwoText  string
+	timeElapsed bool
 }
 
 type buttonsConfiguration struct {
-	profileButtonEnabled bool
-	profileButton        string
-	songButtonEnabled    bool
-	songButton           string
+	profileButton         bool
+	profileButtonText     string
+	songButton            bool
+	previewSongButtonText string
 }
 
 type configuration struct {
@@ -49,4 +51,12 @@ type configuration struct {
 	refreshTime int
 	rows        rowsConfiguration
 	buttons     buttonsConfiguration
+	state       bool
+	logLevel    int
+}
+
+type boolDependencyHandle struct {
+	handle       string
+	configOpcode concurrency.Opcode
+	ref          *bool
 }
