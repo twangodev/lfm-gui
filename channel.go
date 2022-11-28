@@ -17,8 +17,12 @@ func sendKillSignal() {
 	channel <- frame{opcode: concurrency.STATE_UPDATE, data: false}
 }
 
-func updatePresence() {
-	channel <- frame{opcode: concurrency.PRESENCE_UPDATE, data: nil}
+func updatePresence(force bool) {
+	channel <- frame{opcode: concurrency.REQUEST_PRESENCE_UPDATE, data: force}
+}
+
+func updateElapsed() {
+	channel <- frame{opcode: concurrency.ELAPSED_UPDATE}
 }
 
 func sendConfigBoolFrame(o concurrency.Opcode, state bool) {
@@ -30,8 +34,6 @@ func sendConfigBoolFrame(o concurrency.Opcode, state bool) {
 		},
 	}
 }
-
-var emptyCallback = func(ih iup.Ihandle) {}
 
 func updateConfigBoolCallback(opcode concurrency.Opcode, ref *bool,
 	dependentHandles ...boolDependencyHandle,
@@ -103,14 +105,28 @@ func updateConfigIntCallback(opcode concurrency.Opcode, ref *int, min int, origi
 }
 
 func handleMsg(msg frame) {
-	logContext := log.WithFields(log.Fields{
+	logContext := generateLogContext("channelReceiver").WithFields(log.Fields{
 		"opcode": msg.opcode,
 		"data":   msg.data,
 	})
 	logContext.Trace("Received frame")
 	switch msg.opcode {
-	case concurrency.PRESENCE_UPDATE:
-		logContext.Debug("Updating presence")
-		updatePresenceReceiver()
+	case concurrency.STATE_UPDATE:
+		if msg.data.(bool) {
+			go updatePresence(true)
+		} else {
+			logout()
+		}
+	case concurrency.REQUEST_PRESENCE_UPDATE:
+		go updatePresenceReceiver(msg.data.(bool))
+	case concurrency.CONFIG_UPDATE:
+		switch msg.data.(frame).opcode {
+		default:
+			go updatePresence(true)
+		}
+	case concurrency.ELAPSED_UPDATE:
+		go elapsedTimeReceiver()
+	default:
+		logContext.Error("Unknown opcode received")
 	}
 }

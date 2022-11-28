@@ -1,8 +1,8 @@
 package concurrency
 
-var PRESENCE_UPDATE = Opcode{
+var REQUEST_PRESENCE_UPDATE = Opcode{
 	code:   0,
-	strRep: "PRESENCE_UPDATE",
+	strRep: "REQUEST_PRESENCE_UPDATE",
 }
 var STATE_UPDATE = Opcode{
 	code:   1,
@@ -11,4 +11,9 @@ var STATE_UPDATE = Opcode{
 var CONFIG_UPDATE = Opcode{
 	code:   2,
 	strRep: "CONFIG_UPDATE",
+}
+
+var ELAPSED_UPDATE = Opcode{
+	code:   3,
+	strRep: "ELAPSED_UPDATE",
 }

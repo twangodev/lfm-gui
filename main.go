@@ -4,11 +4,8 @@ import (
 	"github.com/gen2brain/iup-go/iup"
 	"github.com/mattn/go-colorable"
 	log "github.com/sirupsen/logrus"
-	"path/filepath"
 	"time"
 )
-
-var albumDefaultPreviewPath, _ = filepath.Abs("./assets/lfm_logo.png")
 
 var config = configuration{
 	app: appConfiguration{
@@ -30,7 +27,6 @@ var config = configuration{
 			smallImageHoverText:  "lfm-gui - " + version,
 			lovedEnabled:         true,
 		},
-		albumDefaultPreviewPath: albumDefaultPreviewPath,
 	},
 	refreshTime: 12000,
 	rows: rowsConfiguration{
@@ -41,12 +37,13 @@ var config = configuration{
 		timeElapsed: true,
 	},
 	buttons: buttonsConfiguration{
-		profileButton:     true,
-		profileButtonText: "Visit Last.FM profile",
-		songButton:        true,
-		songButtonText:    "View scrobble on Last.FM",
+		profileButton:         true,
+		profileButtonText:     "Visit Last.FM profile",
+		songButton:            true,
+		previewSongButtonText: "View scrobble on Last.FM",
 	},
-	state: true,
+	state:    true,
+	logLevel: 0,
 }
 
 const globalColumnSize = "100x"
@@ -60,39 +57,48 @@ func channelReceiver() {
 
 func presenceCycle() {
 	for {
-		updatePresence()
+		generateLogContext("presenceCycle").Trace("Starting presence cycle")
+		updatePresence(false)
 		time.Sleep(time.Duration(config.refreshTime) * time.Millisecond)
+	}
+}
+
+func elapsedCycle() {
+	for {
+		generateLogContext("elapsedCycle").Trace("Starting elapsed cycle")
+		if config.state {
+			go updateElapsed()
+		}
+		time.Sleep(1000 * time.Millisecond)
 	}
 }
 
 func main() {
 
-	log.SetLevel(log.TraceLevel)
 	// Windows Colorful Logs
 	log.SetFormatter(&log.TextFormatter{ForceColors: true})
+	log.SetLevel(log.TraceLevel)
 	log.SetOutput(colorable.NewColorableStdout())
-	mainContext := log.WithField("ctx", "main")
-	mainContext.WithFields(log.Fields{
+	mainContext := generateLogContext("main").WithFields(log.Fields{
 		"name":    config.app.title,
 		"version": version,
 		"appID":   config.app.discordID,
-	}).Info("Starting Application")
+	})
+	mainContext.Info("Starting Application")
 
 	if defaultDiscordId == config.app.discordID {
-		mainContext.Debugln("Using default Discord Application ID")
+		mainContext.Debugln("Detected default Discord Application ID")
 	} else {
 		mainContext.Info("Detected custom Discord Application ID")
 	}
 
-	if config.username == "" {
-		mainContext.Warnln("No username set")
-
-	}
-
+	// Start ongoing background schedulers
 	mainContext.Trace("Starting channelReceiver")
 	go channelReceiver()
 	mainContext.Trace("Starting presenceCycle")
 	go presenceCycle()
+	mainContext.Trace("Starting elapsedCycle")
+	go elapsedCycle()
 
 	mainContext.Trace("Starting IUP")
 	iup.Open()
@@ -111,6 +117,11 @@ func main() {
 
 	mainContext.Trace("Showing main dialog")
 	iup.Show(dlg)
-	iup.MainLoop()
 
+	if config.username == "" {
+		mainContext.Warnln("No username set")
+		go iup.Message("No username set", "Please set your Last.FM username in the settings menu")
+	}
+
+	iup.MainLoop()
 }

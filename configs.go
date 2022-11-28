@@ -1,6 +1,8 @@
 package main
 
-import "lfm-gui/concurrency"
+import (
+	"lfm-gui/concurrency"
+)
 
 type appConfiguration struct {
 	title     string
@@ -8,10 +10,9 @@ type appConfiguration struct {
 }
 
 type previewConfiguration struct {
-	enabled                 bool
-	albumConfig             albumConfiguration
-	smallImageConfig        smallImageConfiguration
-	albumDefaultPreviewPath string
+	enabled          bool
+	albumConfig      albumConfiguration
+	smallImageConfig smallImageConfiguration
 }
 
 type albumConfiguration struct {
@@ -37,10 +38,10 @@ type rowsConfiguration struct {
 }
 
 type buttonsConfiguration struct {
-	profileButton     bool
-	profileButtonText string
-	songButton        bool
-	songButtonText    string
+	profileButton         bool
+	profileButtonText     string
+	songButton            bool
+	previewSongButtonText string
 }
 
 type configuration struct {
@@ -51,6 +52,7 @@ type configuration struct {
 	rows        rowsConfiguration
 	buttons     buttonsConfiguration
 	state       bool
+	logLevel    int
 }
 
 type boolDependencyHandle struct {

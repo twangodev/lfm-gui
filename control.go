@@ -19,7 +19,7 @@ func enableDisableCallback(ih iup.Ihandle) int {
 }
 
 func forceUpdateCallback(ih iup.Ihandle) int {
-	updatePresence()
+	updatePresence(true)
 	return iup.DEFAULT
 }
 
